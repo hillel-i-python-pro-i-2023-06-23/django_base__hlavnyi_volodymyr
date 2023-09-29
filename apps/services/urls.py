@@ -16,4 +16,5 @@ urlpatterns = [
     path("delete_kind/<int:kind_id>/", views.kindofservice_delete, name="kindofservice_delete"),
     path("list_service/", views.ServiceListView.as_view(), name="service_list"),
     path("create_service/", views.ServiceCreateView.as_view(), name="service_create"),
+    path("info/<int:client_id>/", views.client_info, name="client_info"),
 ]

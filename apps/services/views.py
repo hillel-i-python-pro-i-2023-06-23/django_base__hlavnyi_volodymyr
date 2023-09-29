@@ -6,6 +6,7 @@ from apps.services.models import Client, KindOfService, Service
 from apps.services.forms import ClientForm, KindOfServiceForm
 
 import requests
+import logging
 
 
 def home(request):
@@ -127,3 +128,25 @@ def kindofservice_edit(request, kind_id):
         form = KindOfServiceForm(instance=kind)
 
     return render(request, "services/kindofservice_edit.html", {"form": form, "kind": kind})
+
+
+def client_info(request, client_id):
+    client = get_object_or_404(Client, id=client_id)
+
+    services_for_client = Service.objects.filter(client=client)
+    service_kinds = [item.kind_of_service for item in services_for_client]
+
+    logger = logging.getLogger("django")
+    logger.info(f"services_for_client list is {service_kinds} for name {client.name} with {client.id}")
+
+    if request.method == "GET":
+        pass
+        # client.delete()
+        # return redirect("services:client_list")
+
+    return render(
+        request=request,
+        template_name="services/client_info.html",
+        context={"client": client,
+                 "service_kinds": service_kinds},
+    )
